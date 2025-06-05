@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saved Logs</title>
+</head>
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <button type="submit">🏠 Back to Upload Page</button>
+</form>
+<body>
+    <h1>📁 Saved Logs</h1>
+
+    <ul>
+        {% for file in log_files %}
+            <li><a href="/show_log/{{ file }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

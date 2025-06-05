@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Analyzer</title>
+</head>
+<body>
+    <h1>🚀 Log Analyzer</h1>
+    <form action="/saved" method="get" style="margin-bottom: 20px;">
+    <button type="submit">📁 View Saved Logs</button>
+</form>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label>Select .log file to upload:</label><br><br>
+        <input type="file" name="logfile" required><br><br>
+
+        <label>Filter by Log Level:</label><br>
+        <select name="log_level">
+            <option value="">All</option>
+            <option value="INFO">INFO</option>
+            <option value="ERROR">ERROR</option>
+            <option value="DEBUG">DEBUG</option>
+        </select><br><br>
+
+        <label>Search by Keyword:</label><br>
+        <input type="text" name="keyword" placeholder="e.g. connect"><br><br>
+
+        <input type="submit" value="Upload & Filter">
+    </form>
+
+    {% if logs %}
+        <h2>📄 Filtered Logs:</h2>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>Timestamp</th>
+                <th>Level</th>
+                <th>Message</th>
+            </tr>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.level }}</td>
+                <td>{{ log.message }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Download Button -->
+        <form action="/download" method="post">
+            <input type="hidden" name="log_data" value="{% for log in logs %}{{ log.timestamp }} {{ log.level }} {{ log.message }}&#10;{% endfor %}">
+            <button type="submit">⬇️ Download Filtered Logs</button>
+        </form>
+    {% endif %}
+
+    {% if summary %}
+        <h2>📊 Log Level Summary</h2>
+        <canvas id="logChart" width="400" height="200"></canvas>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('logChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['INFO', 'ERROR', 'DEBUG'],
+                    datasets: [{
+                        label: 'Number of Logs',
+                        data: [{{ summary.INFO }}, {{ summary.ERROR }}, {{ summary.DEBUG }}],
+                        backgroundColor: ['blue', 'red', 'green']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    {% endif %}
+</body>
+</html>
+
+

@@ -1,0 +1,17 @@
+[
+    {
+        "timestamp": "2024-06-04 10:05:30",
+        "level": "DEBUG",
+        "message": "Checking database connection"
+    },
+    {
+        "timestamp": "2024-06-04 10:07:55",
+        "level": "ERROR",
+        "message": "Failed to connect to database"
+    },
+    {
+        "timestamp": "2024-06-04 10:09:20",
+        "level": "INFO",
+        "message": "Retrying connection"
+    }
+]
